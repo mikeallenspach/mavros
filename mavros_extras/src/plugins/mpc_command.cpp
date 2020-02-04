@@ -31,6 +31,7 @@
      {
          mavlink::common::msg::MPC_COMMAND msg;
 
+         msg.time_usec  = mpc_command -> header.stamp.toNSec() / 1e3;
          msg.thrust     = mpc_command -> thrust;
          msg.tilt_angle = mpc_command -> tilt_angle;
          msg.torque_x   = mpc_command -> torque_x;
