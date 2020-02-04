@@ -14,3 +14,4 @@ plugin_whitelist:
 - command
 - local_position
 - setpoint_raw
+- mpc_command
