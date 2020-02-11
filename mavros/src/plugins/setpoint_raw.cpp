@@ -75,16 +75,22 @@ private:
 	void handle_position_target_local_ned(const mavlink::mavlink_message_t *msg, mavlink::common::msg::POSITION_TARGET_LOCAL_NED &tgt)
 	{
 		// Transform desired position,velocities,and accels from ENU to NED frame
-		auto position = ftf::transform_frame_ned_enu(Eigen::Vector3d(tgt.x, tgt.y, tgt.z));
-		auto velocity = ftf::transform_frame_ned_enu(Eigen::Vector3d(tgt.vx, tgt.vy, tgt.vz));
-		auto af = ftf::transform_frame_ned_enu(Eigen::Vector3d(tgt.afx, tgt.afy, tgt.afz));
-		float yaw = ftf::quaternion_get_yaw(
-					ftf::transform_orientation_aircraft_baselink(
-						ftf::transform_orientation_ned_enu(
-							ftf::quaternion_from_rpy(0.0, 0.0, tgt.yaw))));
-		Eigen::Vector3d ang_vel_ned(0.0, 0.0, tgt.yaw_rate);
-		auto ang_vel_enu = ftf::transform_frame_ned_enu(ang_vel_ned);
-		float yaw_rate = ang_vel_enu.z();
+		//auto position = ftf::transform_frame_ned_enu(Eigen::Vector3d(tgt.x, tgt.y, tgt.z));
+		//auto velocity = ftf::transform_frame_ned_enu(Eigen::Vector3d(tgt.vx, tgt.vy, tgt.vz));
+		//auto af = ftf::transform_frame_ned_enu(Eigen::Vector3d(tgt.afx, tgt.afy, tgt.afz));
+		//float yaw = ftf::quaternion_get_yaw(
+		//			ftf::transform_orientation_aircraft_baselink(
+		//				ftf::transform_orientation_ned_enu(
+		//					ftf::quaternion_from_rpy(0.0, 0.0, tgt.yaw))));
+		//Eigen::Vector3d ang_vel_ned(0.0, 0.0, tgt.yaw_rate);
+		//auto ang_vel_enu = ftf::transform_frame_ned_enu(ang_vel_ned);
+		//float yaw_rate = ang_vel_enu.z();
+
+        Eigen::Vector3d position(tgt.x,tgt.y,tgt.z);
+        Eigen::Vector3d velocity(tgt.vx,tgt.vy,tgt.vz);
+        Eigen::Vector3d af(tgt.afx,tgt.afy,tgt.afz);
+        float yaw = tgt.yaw;
+        float yaw_rate = tgt.yaw_rate;
 
 		auto target = boost::make_shared<mavros_msgs::PositionTarget>();
 
@@ -133,11 +139,14 @@ private:
 	{
 		// Transform orientation from baselink -> ENU
 		// to aircraft -> NED
-		auto orientation = ftf::transform_orientation_ned_enu(
-					ftf::transform_orientation_baselink_aircraft(
-						Eigen::Quaterniond(tgt.q[0], tgt.q[1], tgt.q[2], tgt.q[3])));
+		//auto orientation = ftf::transform_orientation_ned_enu(
+		//			ftf::transform_orientation_baselink_aircraft(
+		//				Eigen::Quaterniond(tgt.q[0], tgt.q[1], tgt.q[2], tgt.q[3])));
 
-		auto body_rate = ftf::transform_frame_baselink_aircraft(Eigen::Vector3d(tgt.body_roll_rate, tgt.body_pitch_rate, tgt.body_yaw_rate));
+		//auto body_rate = ftf::transform_frame_baselink_aircraft(Eigen::Vector3d(tgt.body_roll_rate, tgt.body_pitch_rate, tgt.body_yaw_rate));
+        
+        Eigen::Quaterniond orientation(tgt.q[0], tgt.q[1], tgt.q[2], tgt.q[3]);
+        Eigen::Vector3d body_rate(tgt.body_roll_rate, tgt.body_pitch_rate, tgt.body_yaw_rate);
 
 		auto target = boost::make_shared<mavros_msgs::AttitudeTarget>();
 
