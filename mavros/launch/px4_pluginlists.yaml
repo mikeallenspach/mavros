@@ -12,6 +12,6 @@ plugin_whitelist:
 # include required plugins
 - 'sys_*'
 - command
-- local_position
 - setpoint_raw
 - mpc_command
+- odom
