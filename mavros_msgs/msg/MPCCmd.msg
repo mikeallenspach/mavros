@@ -1,5 +1,7 @@
 Header header
 
+int32 flag         
+
 float32 thrust
 float32 tilt_angle
 float32 torque_x
