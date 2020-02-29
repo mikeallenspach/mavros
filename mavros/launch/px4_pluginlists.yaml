@@ -15,3 +15,4 @@ plugin_whitelist:
 - setpoint_raw
 - mpc_command
 - odom
+- rc_io
