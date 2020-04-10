@@ -32,7 +32,17 @@
          mavlink::common::msg::MPC_COMMAND msg;
 
          msg.time_usec  = mpc_command -> header.stamp.toNSec() / 1e3;
+
+         // mpc solver flag
          msg.flag       = mpc_command -> flag;
+
+         // mpc attitude state
+         msg.q[0]       = mpc_command -> quat.w;
+         msg.q[1]       = mpc_command -> quat.x;
+         msg.q[2]       = mpc_command -> quat.y;
+         msg.q[3]       = mpc_command -> quat.z;
+
+         // mpc control commands
          msg.thrust     = mpc_command -> thrust;
          msg.tilt_angle = mpc_command -> tilt_angle;
          msg.torque_x   = mpc_command -> torque_x;
